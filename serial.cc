@@ -8,7 +8,6 @@
 
 Serial::Serial(const std::string &comport, const int baudrate)
   : id_(-1)
-  , original_port_settings_({0})
 {
   int baudrate_code = B0;  // Hangup.
   switch(baudrate)
@@ -117,7 +116,7 @@ Serial::Serial(const std::string &comport, const int baudrate)
   }
 }
 
-int Serial::Read(unsigned char* const buffer, const int length)
+int Serial::Read(unsigned char* const buffer, const int length) const
 {
   if (id_ == -1)
     return -1;
@@ -125,12 +124,13 @@ int Serial::Read(unsigned char* const buffer, const int length)
   return read(id_, buffer, length);
 }
 
-int Serial::SendByte(const unsigned char byte)
+int Serial::SendByte(const unsigned char byte) const
 {
   return SendBuffer(&byte, 1);
 }
 
 int Serial::SendBuffer(const unsigned char* const buffer, const int length)
+  const
 {
   if (id_ == -1)
     return -1;

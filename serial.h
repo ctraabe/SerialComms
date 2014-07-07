@@ -8,11 +8,14 @@
 class Serial
 {
 public:
+  Serial() : id_(-1) {}
   Serial(const std::string &comport, const int baudrate);
-  bool IsOpen() { return id_ != -1; }
-  int Read(unsigned char* const buffer, const int length);
-  int SendByte(const unsigned char byte);
-  int SendBuffer(const unsigned char* const buffer, const int length);
+
+  operator bool() const { return id_ != -1; }
+
+  int Read(unsigned char* const buffer, const int length) const;
+  int SendByte(const unsigned char byte) const;
+  int SendBuffer(const unsigned char* const buffer, const int length) const;
   void Close();
 
 private:
