@@ -1,6 +1,7 @@
 #ifndef SERIAL_H_
 #define SERIAL_H_
 
+#include <cinttypes>
 #include <string>
 
 #include <termios.h>
@@ -13,9 +14,9 @@ public:
 
   operator bool() const { return id_ != -1; }
 
-  int Read(unsigned char* const buffer, const int length) const;
-  int SendByte(const unsigned char byte) const;
-  int SendBuffer(const unsigned char* const buffer, const int length) const;
+  int Read(uint8_t* const buffer, const int length) const;
+  int SendByte(const uint8_t byte) const;
+  int SendBuffer(const uint8_t* const buffer, const int length) const;
   void Close();
 
 private:

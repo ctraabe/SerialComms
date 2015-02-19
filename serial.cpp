@@ -1,4 +1,4 @@
-#include "serial.h"
+#include "serial.hpp"
 
 #include <iostream>
 
@@ -116,7 +116,7 @@ Serial::Serial(const std::string &comport, const int baudrate)
   }
 }
 
-int Serial::Read(unsigned char* const buffer, const int length) const
+int Serial::Read(uint8_t* const buffer, const int length) const
 {
   if (id_ == -1)
     return -1;
@@ -124,12 +124,12 @@ int Serial::Read(unsigned char* const buffer, const int length) const
   return read(id_, buffer, length);
 }
 
-int Serial::SendByte(const unsigned char byte) const
+int Serial::SendByte(const uint8_t byte) const
 {
   return SendBuffer(&byte, 1);
 }
 
-int Serial::SendBuffer(const unsigned char* const buffer, const int length)
+int Serial::SendBuffer(const uint8_t* const buffer, const int length)
   const
 {
   if (id_ == -1)
