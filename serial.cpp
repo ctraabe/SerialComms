@@ -121,7 +121,7 @@ int Serial::Read(uint8_t* const buffer, const int length) const
   if (id_ == -1)
     return -1;
 
-  return read(id_, buffer, length);
+  return read(id_, buffer, length);  // Returns the number of bytes read
 }
 
 int Serial::SendByte(const uint8_t byte) const
@@ -135,7 +135,7 @@ int Serial::SendBuffer(const uint8_t* const buffer, const int length)
   if (id_ == -1)
     return -1;
 
-  return write(id_, buffer, length);
+  return write(id_, buffer, length);  // Returns the number of bytes written
 }
 
 void Serial::Close()
@@ -144,5 +144,3 @@ void Serial::Close()
   tcsetattr(id_, TCSANOW, &original_port_settings_);
   id_ = -1;
 }
-
-

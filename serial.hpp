@@ -14,9 +14,14 @@ public:
 
   operator bool() const { return id_ != -1; }
 
+  // Returns the number of bytes read.
   int Read(uint8_t* const buffer, const int length) const;
+
+  // // Returns the number of bytes written.
   int SendByte(const uint8_t byte) const;
+
   int SendBuffer(const uint8_t* const buffer, const int length) const;
+
   void Close();
 
 private:
