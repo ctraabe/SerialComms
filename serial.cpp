@@ -4,6 +4,7 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 
 
 Serial::Serial(const std::string &comport, const int baudrate)
@@ -103,7 +104,7 @@ Serial::Serial(const std::string &comport, const int baudrate)
       return;
   }
 
-  struct termios new_port_settings = {0};
+  struct termios new_port_settings = {};
   new_port_settings.c_cflag = baudrate_code | CS8 | CLOCAL | CREAD;
   new_port_settings.c_iflag = IGNPAR;
   error = tcsetattr(id_, TCSANOW, &new_port_settings);
@@ -116,12 +117,25 @@ Serial::Serial(const std::string &comport, const int baudrate)
   }
 }
 
+int Serial::BytesAvailable() const
+{
+  if (id_ == -1) return -1;
+
+  int bytes_available;
+  ioctl(id_, FIONREAD, &bytes_available);
+  return bytes_available;
+}
+
 int Serial::Read(uint8_t* const buffer, const int length) const
 {
-  if (id_ == -1)
-    return -1;
+  if (id_ == -1) return -1;
 
   return read(id_, buffer, length);  // Returns the number of bytes read
+}
+
+bool Serial::ReadByte(uint8_t* const buffer) const
+{
+  return Read(buffer, 1) == 1;
 }
 
 int Serial::SendByte(const uint8_t byte) const
@@ -132,8 +146,7 @@ int Serial::SendByte(const uint8_t byte) const
 int Serial::SendBuffer(const uint8_t* const buffer, const int length)
   const
 {
-  if (id_ == -1)
-    return -1;
+  if (id_ == -1) return -1;
 
   return write(id_, buffer, length);  // Returns the number of bytes written
 }
